@@ -1,20 +1,29 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import * as SplashScreen from "expo-splash-screen";
+import { WebView } from "react-native-webview";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+async function delay_splash() {
+  await SplashScreen.preventAutoHideAsync();
+  await sleep(1000);
+  await SplashScreen.hideAsync();
+}
+
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    delay_splash();
+    return (
+      <WebView
+        javaScriptCanOpenWindowsAutomatically
+        source={{ uri: "https://mydocent.vercel.app" }}
+      />
+    );
+  }
+}
